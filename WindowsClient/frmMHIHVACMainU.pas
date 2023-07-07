@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Mitsubishi_HVAC;
+  Mitsubishi_HVAC, Vcl.Samples.Spin;
 
 type
   TfrmMHIHVACMain = class(TForm)
@@ -21,6 +21,8 @@ type
     rgDataFormat: TRadioGroup;
     mmoBroadlinkHex: TMemo;
     mmoText: TMemo;
+    gbTemperature: TGroupBox;
+    edtTemperature: TSpinEdit;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure rgOperationClick(Sender: TObject);
@@ -29,6 +31,7 @@ type
     procedure rgHorizontalClick(Sender: TObject);
     procedure rgVerticalClick(Sender: TObject);
     procedure rgDataFormatClick(Sender: TObject);
+    procedure edtTemperatureChange(Sender: TObject);
   private
     { Private declarations }
     fhmihvac : TMHI_HVAC_BroadLink;
@@ -48,6 +51,11 @@ uses ProjLibU;
 
 
 { TfrmMHIHVACMain }
+
+procedure TfrmMHIHVACMain.edtTemperatureChange(Sender: TObject);
+begin
+  UpdateFromUI();
+end;
 
 procedure TfrmMHIHVACMain.FormCreate(Sender: TObject);
 begin
@@ -95,6 +103,8 @@ procedure TfrmMHIHVACMain.UpdateFromUI;
 begin
   fhmihvac.BeginUpdate;
   try
+    fhmihvac.Temperature := edtTemperature.Value;
+
     case rgOperation.ItemIndex of
       0 : fhmihvac.OnOff := TMHI_HVAC_ONOFF.On;
       1 : fhmihvac.OnOff := TMHI_HVAC_ONOFF.Off;
