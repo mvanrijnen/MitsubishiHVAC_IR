@@ -118,8 +118,6 @@ object frmMHIHVACMain: TfrmMHIHVACMain
       ActivePage = tabOutputText
       Align = alClient
       TabOrder = 0
-      ExplicitLeft = 1
-      ExplicitTop = 25
       object tabOutputText: TTabSheet
         Caption = 'Text'
         DesignSize = (

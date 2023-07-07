@@ -42,21 +42,9 @@ var
 
 implementation
 
-{$R *.dfm}
+uses ProjLibU;
 
-function SplitLen(const AValue : string; const APartLen : Integer; const ASeperator : Char = ' ') : string;
-var
-  i : integer;
-begin
-  Result := '';
-  i := 0;
-  while ((i+APartLen)<AValue.Length) do
-  begin
-    Result := Result + AValue.Substring(i, APartLen) + ASeperator;
-    i := i + APartLen;
-  end;
-  Result := Result.TrimRight([ASeperator]);
-end;
+{$R *.dfm}
 
 
 { TfrmMHIHVACMain }

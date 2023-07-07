@@ -166,56 +166,12 @@ type
                                     const AWide : TMHI_HVAC_Wide; const AFan : TMHI_HVAC_Fan; const AVane : TMHI_HVAC_Vane; const AFormat : TMHI_HVAC_DataFormat) : string;
   end;
 
-  function UnHexLify(const AValue : string) : string;
-  function HexDataToByteList(const AValue : string) : TArray<Byte>;
-  function ByteArrayToString(const AValue : TArray<Byte>) : string;
-
 implementation
 
 uses System.DateUtils,
-     System.Math;
+     System.Math,
+     ProjLibU;
 
-function UnHexLify(const AValue : string) : string;
-var
-  i : integer;
-  tmp : string;
-begin
-  Result := '';
-  if odd(AValue.Length) then raise EMHI_HVAC_NeedEvenDataStringException.Create('[UnHexLify] Need even length datastring.');
-  i := 0;
-  while (i<AValue.Length-2) do
-  begin
-    tmp := '$'+ AValue.Substring(i, 2);
-    Result := Result + Chr(StrToInt(tmp));
-    i := i + 2;
-  end;
-end;
-
-function HexDataToByteList(const AValue : string) : TArray<Byte>;
-var
-  d,j,i : integer;
-  tmp : string;
-begin
-  SetLength(Result, 0);
-  if odd(AValue.Length) then raise EMHI_HVAC_NeedEvenDataStringException.Create('[HexDataToByteList] Need even length datastring.');
-  SetLength(Result, AValue.Length div 2);
-  i := 0;
-  j := 0;
-  while (i<AValue.Length-2) do
-  begin
-    tmp := '$'+ AValue.Substring(i, 2);
-    Result[j] := StrToInt(tmp);
-    i := i + 2;
-    j := j + 1;
-  end;
-end;
-
-function ByteArrayToString(const AValue : TArray<Byte>) : string;
-begin
-  for var b : byte in AValue do
-     Result := Result + IntToStr(b) + ',';
-  Result := Result.TrimRight([' ', ',']);
-end;
 
 { TMHI_HVAC_BroadLink }
 

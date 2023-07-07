@@ -107,6 +107,7 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\src\Mitsubishi_HVAC.pas"/>
+        <DCCReference Include="..\src\ProjLibU.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
