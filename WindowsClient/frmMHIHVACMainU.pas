@@ -5,7 +5,9 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.ComCtrls,
-  Mitsubishi_HVAC, Vcl.Samples.Spin;
+  Vcl.Samples.Spin,
+  Mitsubishi_HVAC,
+  BroadLinkU;
 
 type
   TfrmMHIHVACMain = class(TForm)
@@ -35,6 +37,7 @@ type
   private
     { Private declarations }
     fhmihvac : TMHI_HVAC_BroadLink;
+    fbroadlink : TBroadLink;
     procedure UpdateFromUI;
   public
     { Public declarations }
@@ -60,12 +63,14 @@ end;
 procedure TfrmMHIHVACMain.FormCreate(Sender: TObject);
 begin
   fhmihvac := TMHI_HVAC_BroadLink.Create();
+  fbroadlink := TBroadLink.Create();
   pcOutput.ActivePage := tabOutputBroadlink;
   UpdateFromUI();
 end;
 
 procedure TfrmMHIHVACMain.FormDestroy(Sender: TObject);
 begin
+  fbroadlink.Free;
   fhmihvac.Free;
 end;
 
@@ -149,13 +154,16 @@ begin
     fhmihvac.EndUpdate;
   end;
 
-  mmoBroadlinkHex.Text := SplitLen(fhmihvac.BroadLink_IR_HexCode, 2);
+//  mmoBroadlinkHex.Text := SplitLen(fhmihvac.BroadLink_IR_HexCode, 2);
 
+  fbroadlink.DataBytes := fhmihvac.IR_Bytes;
   case rgDataFormat.ItemIndex of
     0 : mmoText.Text := SplitLen(fhmihvac.IR_HexCode, 2);
     1 : mmoText.Text := ByteArrayToString(fhmihvac.IR_Bytes);
-    2 : mmoText.Text := SplitLen(fhmihvac.BroadLink_IR_HexCode, 2);
-    3 : mmoText.Text := ByteArrayToString(fhmihvac.Broadlink_IR_Bytes);
+    2 : mmoText.Text := SplitLen(fbroadlink.Broadlink_HexCode, 2);
+    3 : mmoText.Text := ByteArrayToString(fbroadlink.Broadlink_DataBytes);
+//    2 : mmoText.Text := SplitLen(fhmihvac.BroadLink_IR_HexCode, 2);
+//    3 : mmoText.Text := ByteArrayToString(fhmihvac.Broadlink_IR_Bytes);
   end;
 end;
 

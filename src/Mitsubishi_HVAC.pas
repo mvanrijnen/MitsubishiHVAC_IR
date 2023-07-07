@@ -25,13 +25,13 @@ type
 
   TMHI_HVAC_BroadLink=class
   const
-    CNST_MHI_HVAC_HDR_MARK    = 03400;
-    CNST_MHI_HVAC_HDR_SPACE	  = 01750;
-    CNST_MHI_HVAC_BIT_MARK    = 00450;
-    CNST_MHI_HVAC_ONE_SPACE	  = 01300;
-    CNST_MHI_HVAC_ZERO_SPACE  = 00420;
-    CNST_MHI_HVAC_RPT_MARK	  = 00440;
-    CNST_MHI_HVAC_RPT_SPACE	  = 17100;
+//    CNST_MHI_HVAC_HDR_MARK    = 03400;
+//    CNST_MHI_HVAC_HDR_SPACE	  = 01750;
+//    CNST_MHI_HVAC_BIT_MARK    = 00450;
+//    CNST_MHI_HVAC_ONE_SPACE	  = 01300;
+//    CNST_MHI_HVAC_ZERO_SPACE  = 00420;
+//    CNST_MHI_HVAC_RPT_MARK	  = 00440;
+//    CNST_MHI_HVAC_RPT_SPACE	  = 17100;
 
     CNST_MHI_HVAC_CONSTANT_BYTE_00 = $23;
     CNST_MHI_HVAC_CONSTANT_BYTE_01 = $cb;
@@ -96,10 +96,10 @@ type
     CNST_MHI_HVAC_Temperature_MAX     = 31;
     CNST_MHI_HVAC_Temperature_DEFAULT = 21;
 
-    // BROADLINK_DURATION_CONVERSION_FACTOR (Brodlink do not use exact duration in µs but a factor of BDCF)
-    CNST_BDCF = 269/8192;
-    //	BraodLink Sepecifc Headr for IR command start with a specific code
-    CNST_IR_BroadLink_Code = $26;
+//    // BROADLINK_DURATION_CONVERSION_FACTOR (Brodlink do not use exact duration in µs but a factor of BDCF)
+//    CNST_BDCF = 269/8192;
+//    //	BraodLink Sepecifc Headr for IR command start with a specific code
+//    CNST_IR_BroadLink_Code = $26;
   type
     TMHI_HVAC_Temperature=CNST_MHI_HVAC_Temperature_MIN..CNST_MHI_HVAC_Temperature_MAX;
   strict private
@@ -112,9 +112,9 @@ type
     FFan: TMHI_HVAC_Fan;
     FVane: TMHI_HVAC_Vane;
     FIR_HexCode: string;
-    FBroadLink_IR_HexCode: string;
-    FBroadLink_IR_Ascii: string;
-    FBroadlink_IR_Bytes: TArray<Byte>;
+//    FBroadLink_IR_HexCode: string;
+//    FBroadLink_IR_Ascii: string;
+//    FBroadlink_IR_Bytes: TArray<Byte>;
     FUpdating: Boolean;
     FIR_Bytes: TArray<Byte>;
 
@@ -124,9 +124,6 @@ type
     function FetchModeAndISEEByte() : Byte;
     function FetchModeAndWideByte() : Byte;
     function FetchFanAndVaneByte() : Byte;
-
-    // val2BrCode: Transform a number to a broadlink Hex string
-    function Val2BRCode(const AValue : Double; const ANonZero :Boolean=False): string;
 
     procedure SetFan(const Value: TMHI_HVAC_Fan);
     procedure SetHVACISee(const Value: TMHI_HVAC_ONOFF);
@@ -156,9 +153,9 @@ type
     property IR_HexCode: string read FIR_HexCode;
     property IR_Bytes: TArray<Byte> read FIR_Bytes;
 
-    property BroadLink_IR_HexCode: string read FBroadLink_IR_HexCode;
-    property BroadLink_IR_Ascii: string read FBroadLink_IR_Ascii;
-    property Broadlink_IR_Bytes: TArray<Byte> read FBroadlink_IR_Bytes;
+//    property BroadLink_IR_HexCode: string read FBroadLink_IR_HexCode;
+//    property BroadLink_IR_Ascii: string read FBroadLink_IR_Ascii;
+//    property Broadlink_IR_Bytes: TArray<Byte> read FBroadlink_IR_Bytes;
 
     property Updating: Boolean read FUpdating;
 
@@ -184,10 +181,10 @@ constructor TMHI_HVAC_BroadLink.Create;
 begin
   FUpdating := False;
   FIR_HexCode := '';
-  FBroadLink_IR_HexCode := '';
-  FBroadLink_IR_Ascii := '';
+//  FBroadLink_IR_HexCode := '';
+//  FBroadLink_IR_Ascii := '';
   SetLength(FIR_Bytes, 0);
-  SetLength(FBroadlink_IR_Bytes, 0);
+//  SetLength(FBroadlink_IR_Bytes, 0);
   Reset();
 end;
 
@@ -214,9 +211,9 @@ begin
     case AFormat of
       TMHI_HVAC_DataFormat.HexCodes: Result := fhvac.IR_HexCode;
       TMHI_HVAC_DataFormat.ByteList: Result := ByteArrayToString(fhvac.IR_Bytes);
-      TMHI_HVAC_DataFormat.BroadlinkHex: Result := fhvac.BroadLink_IR_HexCode;
-      TMHI_HVAC_DataFormat.BroadlinkASCII: Result := fhvac.BroadLink_IR_Ascii;
-      TMHI_HVAC_DataFormat.BroadlinkByteList: Result := ByteArrayToString(fhvac.Broadlink_IR_Bytes);
+//      TMHI_HVAC_DataFormat.BroadlinkHex: Result := fhvac.BroadLink_IR_HexCode;
+//      TMHI_HVAC_DataFormat.BroadlinkASCII: Result := fhvac.BroadLink_IR_Ascii;
+//      TMHI_HVAC_DataFormat.BroadlinkByteList: Result := ByteArrayToString(fhvac.Broadlink_IR_Bytes);
     else
       raise EMHI_HVAC_UnsupportedEnumValueException.CreateFmt('[%s] Unsupport enum value for enum: %s', ['TMHI_HVAC_BroadLink.CreateDataString', 'Format']);
     end;
@@ -387,6 +384,80 @@ begin
   end;
 end;
 
+//procedure TMHI_HVAC_BroadLink.InternalUpdate();
+//var
+//  mask,
+//  i,j: integer;
+//  strdatacode,
+//  strrepeatframe,
+//  strheaderframe,
+//  strhexcode,
+//  tmpstrcode  : string;
+//begin
+//  if FUpdating then
+//     Exit;
+//
+//  // Build_Cmd: Build the Command applying all parameters defined. The cmd is stored in memory, not send.
+//  FMHVAC[00] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_00;
+//  FMHVAC[01] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_01;
+//  FMHVAC[02] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_02;
+//  FMHVAC[03] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_03;
+//  FMHVAC[04] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_04;
+//  FMHVAC[05] := FetchOnOffByte();
+//  FMHVAC[06] := FetchModeAndISEEByte();
+//  FMHVAC[07] := Max(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MIN, Min(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MAX, Self.Temperature)) - TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MIN;
+//  FMHVAC[08] := FetchModeAndWideByte();
+//  FMHVAC[09] := FetchFanAndVaneByte();
+//  FMHVAC[10] := HourOf(Now)*6+(MinuteOf(Now) div 10);
+//  FMHVAC[11] := 00; {TODO -oOwner -cGeneral : EndTime}
+//  FMHVAC[12] := 00; {TODO -oOwner -cGeneral : StartTime}
+//  FMHVAC[13] := 00; {TODO -oOwner -cGeneral : Timer}
+//  FMHVAC[14] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_14;
+//  FMHVAC[15] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_15;
+//  FMHVAC[16] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_16;
+//
+//  // Calculate Checksum
+//  FMHVAC[17] := ((FMHVAC[00] + FMHVAC[01] + FMHVAC[02] + FMHVAC[03] + FMHVAC[04] + FMHVAC[05] + FMHVAC[06] + FMHVAC[07] +
+//                  FMHVAC[08] + FMHVAC[09] + FMHVAC[11] + FMHVAC[12] + FMHVAC[13] + FMHVAC[14] + FMHVAC[15] + FMHVAC[16]) mod (256));
+//
+//  FIR_HexCode := '';
+//  for i := 0 to 17  do
+//      FIR_HexCode := FIR_HexCode + IntToHex(FMHVAC[i], 2);
+//  FIR_Bytes := HexDataToByteList(FIR_HexCode);
+//
+//
+//  for i := 0 to 17 do
+//  begin
+//    mask := 1;
+//    tmpstrcode := '';
+//    for j := 0 to 7 do
+//    begin
+//      if (FMHVAC[i] and mask<>0) then
+//         tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ONE_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2)
+//      else
+//        tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ZERO_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2);
+//      mask := mask shl 1;
+//    end;
+//	  strhexcode := strhexcode + tmpstrcode;
+//  end;
+//  // strhexcode contain the Frame for the HVAC Mitsubishi IR Command requested
+//
+//  FBroadLink_IR_HexCode := IntToHex(TMHI_HVAC_BroadLink.CNST_IR_BroadLink_Code, 2);
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + IntToHex(00, 2);
+//
+//  strheaderframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
+//	strheaderframe := strheaderframe + Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
+//  strrepeatframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
+//  strrepeatframe := strrepeatframe + Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
+//	strdatacode := strheaderframe + strhexcode + strrepeatframe;
+//
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + Val2BRCode(strdatacode.Length/2, True);
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + strdatacode;
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + '0d05';
+//  FBroadLink_IR_Ascii := UnHexLify(FBroadLink_IR_HexCode.Replace(' ', '', [rfReplaceAll]).Replace(#13, '', [rfReplaceAll]));
+//  FBroadlink_IR_Bytes := HexDataToByteList(FBroadLink_IR_HexCode);
+//end;
+
 procedure TMHI_HVAC_BroadLink.InternalUpdate();
 var
   mask,
@@ -429,56 +500,38 @@ begin
   FIR_Bytes := HexDataToByteList(FIR_HexCode);
 
 
-  for i := 0 to 17 do
-  begin
-    mask := 1;
-    tmpstrcode := '';
-    for j := 0 to 7 do
-    begin
-      if (FMHVAC[i] and mask<>0) then
-         tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ONE_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2)
-      else
-        tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ZERO_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2);
-      mask := mask shl 1;
-    end;
-	  strhexcode := strhexcode + tmpstrcode;
-  end;
-  // strhexcode contain the Frame for the HVAC Mitsubishi IR Command requested
-
-  FBroadLink_IR_HexCode := IntToHex(TMHI_HVAC_BroadLink.CNST_IR_BroadLink_Code, 2);
-  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + IntToHex(00, 2);
-
-  strheaderframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
-	strheaderframe := strheaderframe + self.Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
-  strrepeatframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
-  strrepeatframe := strrepeatframe + Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
-	strdatacode := strheaderframe + strhexcode + strrepeatframe;
-
-  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + Val2BRCode(strdatacode.Length/2, True);
-  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + strdatacode;
-  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + '0d05';
-  FBroadLink_IR_Ascii := UnHexLify(FBroadLink_IR_HexCode.Replace(' ', '', [rfReplaceAll]).Replace(#13, '', [rfReplaceAll]));
-  FBroadlink_IR_Bytes := HexDataToByteList(FBroadLink_IR_HexCode);
+//  for i := 0 to 17 do
+//  begin
+//    mask := 1;
+//    tmpstrcode := '';
+//    for j := 0 to 7 do
+//    begin
+//      if (FMHVAC[i] and mask<>0) then
+//         tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ONE_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2)
+//      else
+//        tmpstrcode := tmpstrcode + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_BIT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF), 2) + IntToHex(trunc(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_ZERO_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF), 2);
+//      mask := mask shl 1;
+//    end;
+//	  strhexcode := strhexcode + tmpstrcode;
+//  end;
+//  // strhexcode contain the Frame for the HVAC Mitsubishi IR Command requested
+//
+//  FBroadLink_IR_HexCode := IntToHex(TMHI_HVAC_BroadLink.CNST_IR_BroadLink_Code, 2);
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + IntToHex(00, 2);
+//
+//  strheaderframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
+//	strheaderframe := strheaderframe + Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_HDR_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
+//  strrepeatframe := Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_MARK*TMHI_HVAC_BroadLink.CNST_BDCF);
+//  strrepeatframe := strrepeatframe + Val2BRCode(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_RPT_SPACE*TMHI_HVAC_BroadLink.CNST_BDCF);
+//	strdatacode := strheaderframe + strhexcode + strrepeatframe;
+//
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + Val2BRCode(strdatacode.Length/2, True);
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + strdatacode;
+//  FBroadLink_IR_HexCode := FBroadLink_IR_HexCode + '0d05';
+//  FBroadLink_IR_Ascii := UnHexLify(FBroadLink_IR_HexCode.Replace(' ', '', [rfReplaceAll]).Replace(#13, '', [rfReplaceAll]));
+//  FBroadlink_IR_Bytes := HexDataToByteList(FBroadLink_IR_HexCode);
 end;
 
-function TMHI_HVAC_BroadLink.Val2BRCode(const AValue: Double; const ANonZero: Boolean): string;
-var
-  tmp : Integer;
-  dl : string;
-begin
-  tmp := Ceil(AValue);
-  if tmp<256 then // force int, round up float if needed
-     // Working with just a byte
-     Result := IntToHex(tmp, 2)
-  else begin
-     // Working with a Dword
-     dl := IntToHex(tmp, 4);
-     if ANonZero then
-        Result := dl.Substring(2, 2) + dl.Substring(0, 2)
-     else
-        Result := '00' + dl.Substring(2, 2) + dl.Substring(0, 2);
-  end;
-end;
 
 procedure TMHI_HVAC_BroadLink.WriteToConsole;
 begin

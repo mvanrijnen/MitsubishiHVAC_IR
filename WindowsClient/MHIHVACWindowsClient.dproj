@@ -108,6 +108,7 @@
         </DCCReference>
         <DCCReference Include="..\src\Mitsubishi_HVAC.pas"/>
         <DCCReference Include="..\src\ProjLibU.pas"/>
+        <DCCReference Include="..\src\BroadLinkU.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -6,11 +6,33 @@ function SplitLen(const AValue : string; const APartLen : Integer; const ASepera
 function HexDataToByteList(const AValue : string) : TArray<Byte>;
 function ByteArrayToString(const AValue : TArray<Byte>) : string;
 function UnHexLify(const AValue : string) : string;
+function Val2BRCode(const AValue: Double; const ANonZero: Boolean=False): string;
 
 
 implementation
 
-uses System.SysUtils;
+uses System.SysUtils,
+     System.Math;
+
+function Val2BRCode(const AValue: Double; const ANonZero: Boolean=False): string;
+var
+  tmp : Integer;
+  dl : string;
+begin
+  tmp := Ceil(AValue);
+  if tmp<256 then // force int, round up float if needed
+     // Working with just a byte
+     Result := IntToHex(tmp, 2)
+  else begin
+     // Working with a Dword
+     dl := IntToHex(tmp, 4);
+     if ANonZero then
+        Result := dl.Substring(2, 2) + dl.Substring(0, 2)
+     else
+        Result := '00' + dl.Substring(2, 2) + dl.Substring(0, 2);
+  end;
+end;
+
 
 function SplitLen(const AValue : string; const APartLen : Integer; const ASeperator : Char = ' ') : string;
 var

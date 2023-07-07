@@ -4,7 +4,8 @@ uses
   Vcl.Forms,
   frmMHIHVACMainU in 'frmMHIHVACMainU.pas' {frmMHIHVACMain},
   Mitsubishi_HVAC in '..\src\Mitsubishi_HVAC.pas',
-  ProjLibU in '..\src\ProjLibU.pas';
+  ProjLibU in '..\src\ProjLibU.pas',
+  BroadLinkU in '..\src\BroadLinkU.pas';
 
 {$R *.res}
 
