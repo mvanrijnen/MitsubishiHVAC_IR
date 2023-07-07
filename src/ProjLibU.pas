@@ -18,7 +18,7 @@ var
 begin
   Result := '';
   i := 0;
-  while ((i+APartLen)<AValue.Length) do
+  while ((i+APartLen)<=AValue.Length) do
   begin
     Result := Result + AValue.Substring(i, APartLen) + ASeperator;
     i := i + APartLen;
@@ -34,7 +34,7 @@ begin
   Result := '';
   if odd(AValue.Length) then raise Exception.Create('[UnHexLify] Need even length datastring.');
   i := 0;
-  while (i<AValue.Length-2) do
+  while (i<=AValue.Length-2) do
   begin
     tmp := '$'+ AValue.Substring(i, 2);
     Result := Result + Chr(StrToInt(tmp));
@@ -52,7 +52,7 @@ begin
   SetLength(Result, AValue.Length div 2);
   i := 0;
   j := 0;
-  while (i<AValue.Length-2) do
+  while (i<=AValue.Length-2) do
   begin
     tmp := '$'+ AValue.Substring(i, 2);
     Result[j] := StrToInt(tmp);
