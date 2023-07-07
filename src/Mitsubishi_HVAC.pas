@@ -166,6 +166,9 @@ type
                                     const AWide : TMHI_HVAC_Wide; const AFan : TMHI_HVAC_Fan; const AVane : TMHI_HVAC_Vane; const AFormat : TMHI_HVAC_DataFormat) : string;
   end;
 
+  function UnHexLify(const AValue : string) : string;
+  function HexDataToByteList(const AValue : string) : TArray<Byte>;
+  function ByteArrayToString(const AValue : TArray<Byte>) : string;
 
 implementation
 
@@ -206,7 +209,6 @@ begin
     j := j + 1;
   end;
 end;
-
 
 function ByteArrayToString(const AValue : TArray<Byte>) : string;
 begin
