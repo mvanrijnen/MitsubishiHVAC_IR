@@ -23,6 +23,14 @@ type
   TMHI_HVAC_DataFormat = (HexCodes, ByteList, BroadlinkHex, BroadlinkASCII, BroadlinkByteList);
   {$SCOPEDENUMS OFF}
 
+const
+  CNST_MHI_HVAC_Temperature_MIN     = 16;
+  CNST_MHI_HVAC_Temperature_MAX     = 31;
+  CNST_MHI_HVAC_Temperature_DEFAULT = 21;
+
+type
+  TMHI_HVAC_Temperature=CNST_MHI_HVAC_Temperature_MIN..CNST_MHI_HVAC_Temperature_MAX;
+
   TMHI_HVAC_BroadLink=class
   const
 //    CNST_MHI_HVAC_HDR_MARK    = 03400;
@@ -92,16 +100,10 @@ type
     CNST_TimeCtrlOnStartEnd	= %00000111;
     CNST_TimeCtrlOff			  = %00000000;
 
-    CNST_MHI_HVAC_Temperature_MIN     = 16;
-    CNST_MHI_HVAC_Temperature_MAX     = 31;
-    CNST_MHI_HVAC_Temperature_DEFAULT = 21;
-
 //    // BROADLINK_DURATION_CONVERSION_FACTOR (Brodlink do not use exact duration in µs but a factor of BDCF)
 //    CNST_BDCF = 269/8192;
 //    //	BraodLink Sepecifc Headr for IR command start with a specific code
 //    CNST_IR_BroadLink_Code = $26;
-  type
-    TMHI_HVAC_Temperature=CNST_MHI_HVAC_Temperature_MIN..CNST_MHI_HVAC_Temperature_MAX;
   strict private
     FMHVAC : array[0..17] of byte;
     FHVACOnOff: TMHI_HVAC_ONOFF;
@@ -479,7 +481,7 @@ begin
   FMHVAC[04] := TMHI_HVAC_BroadLink.CNST_MHI_HVAC_CONSTANT_BYTE_04;
   FMHVAC[05] := FetchOnOffByte();
   FMHVAC[06] := FetchModeAndISEEByte();
-  FMHVAC[07] := Max(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MIN, Min(TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MAX, Self.Temperature)) - TMHI_HVAC_BroadLink.CNST_MHI_HVAC_Temperature_MIN;
+  FMHVAC[07] := Max(CNST_MHI_HVAC_Temperature_MIN, Min(CNST_MHI_HVAC_Temperature_MAX, Self.Temperature)) - CNST_MHI_HVAC_Temperature_MIN;
   FMHVAC[08] := FetchModeAndWideByte();
   FMHVAC[09] := FetchFanAndVaneByte();
   FMHVAC[10] := HourOf(Now)*6+(MinuteOf(Now) div 10);

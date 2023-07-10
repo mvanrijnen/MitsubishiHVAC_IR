@@ -2,17 +2,40 @@ unit ProjLibU;
 
 interface
 
+uses  System.UITypes,
+      Vcl.Controls;
+
 function SplitLen(const AValue : string; const APartLen : Integer; const ASeperator : Char = ' ') : string;
 function HexDataToByteList(const AValue : string) : TArray<Byte>;
 function ByteArrayToString(const AValue : TArray<Byte>) : string;
 function UnHexLify(const AValue : string) : string;
 function Val2BRCode(const AValue: Double; const ANonZero: Boolean=False): string;
 
+procedure PushMouseCursor(const ANewCursor : TCursor = crHourGlass);
+procedure PopMouseCursor();
 
 implementation
 
-uses System.SysUtils,
+uses Vcl.Forms,
+     System.SysUtils,
+     System.Generics.Collections,
      System.Math;
+
+var
+  _cursorstack : TStack<TCursor>;
+
+procedure PushMouseCursor(const ANewCursor : TCursor = crHourGlass);
+begin
+  _cursorstack.Push(Screen.Cursor);
+  Screen.Cursor := ANewCursor;
+  Application.ProcessMessages;
+end;
+
+procedure PopMouseCursor();
+begin
+  Screen.Cursor := _cursorstack.Pop();
+  Application.ProcessMessages;
+end;
 
 function Val2BRCode(const AValue: Double; const ANonZero: Boolean=False): string;
 var
@@ -90,5 +113,14 @@ begin
   Result := Result.TrimRight([' ', ',']);
 end;
 
+
+initialization
+  if not Assigned(_cursorstack) then
+  begin
+    _cursorstack := TStack<TCursor>.Create();
+  end;
+
+finalization
+  FreeAndNil(_cursorstack);
 
 end.
