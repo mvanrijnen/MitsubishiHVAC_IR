@@ -48,7 +48,8 @@ var
 
 implementation
 
-uses ProjLibU;
+uses  System.NetEncoding,
+      ProjLibU;
 
 {$R *.dfm}
 
@@ -162,6 +163,7 @@ begin
     1 : mmoText.Text := ByteArrayToString(fhmihvac.IR_Bytes);
     2 : mmoText.Text := SplitLen(fbroadlink.Broadlink_HexCode, 2);
     3 : mmoText.Text := ByteArrayToString(fbroadlink.Broadlink_DataBytes);
+    4 : mmoText.Text := TBase64Encoding.Base64.EncodeBytesToString(fbroadlink.Broadlink_DataBytes).Replace(#13#10, '', [rfReplaceAll]);
 //    2 : mmoText.Text := SplitLen(fhmihvac.BroadLink_IR_HexCode, 2);
 //    3 : mmoText.Text := ByteArrayToString(fhmihvac.Broadlink_IR_Bytes);
   end;

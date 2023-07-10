@@ -1,9 +1,10 @@
 object frmMHIHVACMain: TfrmMHIHVACMain
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = 'MHI HVAC Control'
   ClientHeight = 542
-  ClientWidth = 1166
+  ClientWidth = 1090
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +14,7 @@ object frmMHIHVACMain: TfrmMHIHVACMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   DesignSize = (
-    1166
+    1090
     542)
   TextHeight = 15
   object rgOperation: TRadioGroup
@@ -105,7 +106,7 @@ object frmMHIHVACMain: TfrmMHIHVACMain
   object gbOutput: TGroupBox
     Left = 24
     Top = 160
-    Width = 1118
+    Width = 1054
     Height = 362
     Anchors = [akLeft, akTop, akRight, akBottom]
     Caption = ' Output '
@@ -113,65 +114,70 @@ object frmMHIHVACMain: TfrmMHIHVACMain
     object pcOutput: TPageControl
       Left = 2
       Top = 17
-      Width = 1114
+      Width = 1050
       Height = 343
-      ActivePage = tabOutputBroadlink
+      ActivePage = tabOutputText
       Align = alClient
       TabOrder = 0
-      ExplicitWidth = 1050
       ExplicitHeight = 355
       object tabOutputText: TTabSheet
         Caption = 'Text'
         DesignSize = (
-          1106
+          1042
           313)
         object rgDataFormat: TRadioGroup
           Left = 10
           Top = 3
-          Width = 319
+          Width = 399
           Height = 86
           Caption = ' DataFormat '
-          Columns = 2
+          Columns = 3
           ItemIndex = 0
           Items.Strings = (
             'Pure IR HexCodes'
             'Pure IR ByteList'
             'Broadlink HexCodes'
-            'Broadlink ByteList')
+            'Broadlink ByteList'
+            'Broadlink Base64')
           TabOrder = 0
           OnClick = rgDataFormatClick
         end
         object mmoText: TMemo
           Left = 10
           Top = 95
-          Width = 1093
+          Width = 1029
           Height = 206
           Anchors = [akLeft, akTop, akRight, akBottom]
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -12
+          Font.Name = 'Consolas'
+          Font.Style = []
           Lines.Strings = (
             'mmoBroadlinkHex')
+          ParentFont = False
           ReadOnly = True
+          ScrollBars = ssVertical
           TabOrder = 1
-          ExplicitWidth = 1029
-          ExplicitHeight = 218
+          ExplicitWidth = 1093
         end
       end
       object tabOutputBroadlink: TTabSheet
         Caption = 'Broadlink'
         ImageIndex = 1
         DesignSize = (
-          1106
+          1042
           313)
         object mmoBroadlinkHex: TMemo
           Left = 3
           Top = 0
-          Width = 1100
+          Width = 1036
           Height = 101
           Anchors = [akLeft, akTop, akRight, akBottom]
           Lines.Strings = (
             'mmoBroadlinkHex')
           ReadOnly = True
           TabOrder = 0
-          ExplicitWidth = 1036
           ExplicitHeight = 113
         end
       end

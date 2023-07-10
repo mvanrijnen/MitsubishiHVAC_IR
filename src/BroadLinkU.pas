@@ -2,11 +2,40 @@ unit BroadLinkU;
 
 interface
 
+// https://github.com/mjg59/python-broadlink/blob/3c183eaaef6cbaf9c1154b232116bc130cd2113f/broadlink/device.py
 
 type
   {$SCOPEDENUMS ON}
-  TBroadLinkDeviceType=(RM2, RM4);
+  TBroadLinkDeviceType=(Generic, RMMINI, RM2, RM4);
   {$SCOPEDENUMS OFF}
+
+  TByteArray = TArray<Byte>;
+
+  TBroadLinkDevice=class
+  strict private
+    FDeviceType: TBroadLinkDeviceType;
+  private
+  protected
+    procedure SetDeviceType(const Value: TBroadLinkDeviceType);
+  public
+    constructor Create(); virtual;
+
+    function Auth() : Boolean;
+    function Send_Packet(const APacketType : Integer; const APayLoad : TByteArray) : TByteArray;
+    property DeviceType: TBroadLinkDeviceType read FDeviceType;
+  end;
+
+  TBroadLinkRMMini=class(TBroadLinkDevice)
+  const
+    CNST_CMD_SENDDATA = $02;
+  strict private
+    function _Send(const ACommand : integer; const AData : TByteArray) : Boolean;
+  public
+    constructor Create; override;
+
+    function Send_Data(const AData : TByteArray) : Boolean;
+  end;
+
   TBroadLink=class
   const
     CNST_DEVTYPE_RM2='RM2';
@@ -29,26 +58,26 @@ type
     FPort: Integer;
     FDeviceType: TBroadLinkDeviceType;
     FMacAddress: string;
-    FDataBytes: TArray<Byte>;
+    FDataBytes: TByteArray;
     FBroadlink_HexCode: string;
     FBroadlink_AsciiCode: string;
-    FBroadlink_DataBytes: TArray<Byte>;
-    procedure SetDataBytes(const Value: TArray<Byte>);
+    FBroadlink_DataBytes: TByteArray;
+    procedure SetDataBytes(const Value: TByteArray);
   public
     constructor Create;
 
-    procedure Send();
+    //procedure Send();
 
-    property Host: string read FHost write FHost;
-    property Port: Integer read FPort write FPort;
-    property MacAddress: string read FMacAddress write FMacAddress;
+    //property Host: string read FHost write FHost;
+    //property Port: Integer read FPort write FPort;
+    //property MacAddress: string read FMacAddress write FMacAddress;
 
-    property DeviceType: TBroadLinkDeviceType read FDeviceType write FDeviceType;
-    property DataBytes: TArray<Byte> read FDataBytes write SetDataBytes;
+    //property DeviceType: TBroadLinkDeviceType read FDeviceType write FDeviceType;
+    property DataBytes: TByteArray read FDataBytes write SetDataBytes;
 
     property Broadlink_HexCode: string read FBroadlink_HexCode;
     property Broadlink_AsciiCode: string read FBroadlink_AsciiCode;
-    property Broadlink_DataBytes: TArray<Byte> read FBroadlink_DataBytes;
+    property Broadlink_DataBytes: TByteArray read FBroadlink_DataBytes;
   end;
 
 
@@ -68,14 +97,14 @@ begin
   FDeviceType := TBroadLinkDeviceType.RM4;
 end;
 
-procedure TBroadLink.Send;
-var
-  hexcodeascii : string;
-begin
-//
-end;
+//procedure TBroadLink.Send;
+//var
+//  hexcodeascii : string;
+//begin
+////
+//end;
 
-procedure TBroadLink.SetDataBytes(const Value: TArray<Byte>);
+procedure TBroadLink.SetDataBytes(const Value: TByteArray);
 var
   mask,
   i,j: integer;
@@ -117,6 +146,46 @@ begin
 
   FBroadlink_AsciiCode := UnHexLify(FBroadlink_HexCode.Replace(' ', '', [rfReplaceAll]).Replace(#13, '', [rfReplaceAll]));
   FBroadlink_DataBytes := HexDataToByteList(FBroadlink_HexCode);
+end;
+
+{ TBroadLinkDevice }
+
+function TBroadLinkDevice.Auth: Boolean;
+begin
+//
+end;
+
+constructor TBroadLinkDevice.Create;
+begin
+  FDeviceType := TBroadLinkDeviceType.Generic;
+end;
+
+function TBroadLinkDevice.Send_Packet(const APacketType: Integer; const APayLoad: TByteArray): TByteArray;
+begin
+
+end;
+
+procedure TBroadLinkDevice.SetDeviceType(const Value: TBroadLinkDeviceType);
+begin
+  FDeviceType := Value;
+end;
+
+{ TBroadLinkRMMini }
+
+constructor TBroadLinkRMMini.Create;
+begin
+  inherited;
+  SetDeviceType(TBroadLinkDeviceType.RMMINI);
+end;
+
+function TBroadLinkRMMini.Send_Data(const AData: TByteArray): Boolean;
+begin
+  Result :=  Self._Send(TBroadLinkRMMini.CNST_CMD_SENDDATA, AData);
+end;
+
+function TBroadLinkRMMini._Send(const ACommand: integer; const AData: TByteArray): Boolean;
+begin
+  ///
 end;
 
 end.
